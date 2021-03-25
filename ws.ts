@@ -24,6 +24,7 @@ export default class WS extends EventTarget{
     protected conn!: Deno.Conn;
     protected queue: Queue[] = [];
     private _isClosed = false;
+    readyState: 0 | 1 | 2 | 3 = 0;
 
     /**
      * Same duplicate class which is used in std/ws/mod.ts WebsocketImpl
@@ -44,6 +45,7 @@ export default class WS extends EventTarget{
             conn
         } = typeof socket == 'string' ? await createConnection(socket, headers) : socket;
 
+        this.readyState = 1;
         this.dispatchEvent(new Event('open'));
         this.reader = bufReader;
         this.writer = bufWriter;
@@ -98,6 +100,7 @@ export default class WS extends EventTarget{
                     break;
 
                 case OpCode.Close: {
+                    this.readyState = 2;
                     const code = (frame.payload[0] << 8) | frame.payload[1];
                     const reason = decoder.decode(frame.payload.subarray(2, frame.payload.length));
                     await this.close(code, reason);
@@ -161,6 +164,7 @@ export default class WS extends EventTarget{
             this.dispatchEvent(new ErrorEvent('error', { error }))
         }finally{
             this._isClosed = true;
+            this.readyState = 3;
             this.dispatchEvent(new CloseEvent('close'));
         }
     }
