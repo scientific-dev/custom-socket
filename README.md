@@ -3,6 +3,8 @@
 As of current deno version, deno does not supports adding custom headers to the socket beacause deno follows the js web standards. So for people who want custom headers. Here is a module for it.
 This module helps you to add custom headers something like this
 
+> This package is made for some development issues. If you find bugs report an issue or create an pull request.
+
 ```ts
 import WS from "https://raw.githubusercontent.com/Scientific-Guy/custom-socket/main/mod.ts";
 
@@ -17,3 +19,5 @@ ws.onmessage = (ev: MessageEvent) => console.log(ev.data);
 ws.onclose = (ev: CloseEvent) => console.log('Socket has been closed');
 ws.onerror = (ev: ErrorEvent) => console.log(ev.errior);
 ```
+
+This package uses the codes of https://deno.land/std@0.68.0/ws and uses the latest updated standard libraries and a better `WebSocket` implementation for it.
