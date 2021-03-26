@@ -171,7 +171,7 @@ export default class WS extends EventTarget{
 
     private dequeue(){
         const [entry] = this.queue;
-        if(!entry || !this._isClosed) return;
+        if(!entry || this._isClosed) return;
         const { d, frame } = entry;
 
         writeFrame(frame, this.writer).then(d.resolve, d.reject).finally(() => {
@@ -195,7 +195,7 @@ export default class WS extends EventTarget{
      * @example await ws.send("Hello world");
      */
     send(data: WebSocketMessage): Promise<void> {
-        return this.enqueue( {
+        return this.enqueue({
             isLastFrame: true,
             opcode: typeof data == 'string' ? OpCode.TextFrame : OpCode.BinaryFrame,
             payload: typeof data == 'string' ? new TextEncoder().encode(data) : data,
