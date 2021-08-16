@@ -6,7 +6,7 @@ This module helps you to add custom headers something like this
 > This package is made for some development issues. If you find bugs report an issue or create an pull request.
 
 ```ts
-import WS from "https://raw.githubusercontent.com/Scientific-Guy/custom-socket/main/mod.ts";
+import WS from "https://raw.githubusercontent.com/scientific-dev/custom-socket/main/mod.ts";
 
 const headers = {
     Authorization: "Bearer token"
